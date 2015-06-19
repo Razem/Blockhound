@@ -8,7 +8,6 @@ Its main functionality is to store the following actions of a player with his cu
 - useItem.*
 - deaths
 - chestOpened
-- chestOpened
 - trappedChestTriggered
 - hopperInspected
 - dropperInspected
