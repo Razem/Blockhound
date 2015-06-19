@@ -8,6 +8,9 @@
     "test": "node test"
   },
   "author": "Radomír Žemlička <info@razem.cz> (http://razem.cz)",
+  "contributors": [
+    "Martin Brychta <martin@brychta.name> (http://brychta.name)"
+  ],
   "license": "BSD-3-Clause",
   "dependencies": {
     "mysql": "^2.7.0",

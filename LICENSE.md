@@ -1,4 +1,4 @@
-Copyright (c) 2015, Radomír Žemlička
+Copyright (c) 2015, Radomír Žemlička, Martin Brychta
 
 All rights reserved.
 
