@@ -11,9 +11,10 @@ Its main functionality is to store the following actions of a player with his cu
 
 ## Installation process
 0. `npm install`
-0. Create config.json
-0. Create DB structure (using db.sql)
-0. start.bat
+0. Create **config.json**
+0. Create DB structure (using **db.sql**)
+0. Make an Apache alias for the **ui** directory
+0. **start.bat**
 
 ### Example of config.json
 ```
@@ -29,7 +30,7 @@ Its main functionality is to store the following actions of a player with his cu
 ```
 
 ## Todo
-- Web interface for displaying actions
+- More filter options in the UI
 
 ## Known issues
 - Stats are updated only every 45 seconds (approximately)
