@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Počítač: 127.0.0.1
--- Vytvořeno: Pát 19. čen 2015, 16:21
+-- Vytvořeno: Pát 19. čen 2015, 22:07
 -- Verze serveru: 5.6.17
 -- Verze PHP: 5.5.12
 
@@ -38,6 +38,23 @@ CREATE TABLE IF NOT EXISTS `blockhound_actions` (
   `action_value` int(11) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabulky `blockhound_players_names`
+--
+
+CREATE TABLE IF NOT EXISTS `blockhound_players_names` (
+  `uuid` char(32) NOT NULL,
+  `name` varchar(16) NOT NULL,
+  `date_cached` datetime NOT NULL,
+  PRIMARY KEY (`uuid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
