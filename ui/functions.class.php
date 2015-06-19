@@ -2,16 +2,16 @@
 
 class functions {
 
-    private $sql, $dbhost, $dbuser, $dbpass, $dbdb, $dbport;
+    private $sql, $dbhost, $dbuser, $dbpass, $dbdb;
 
     public function __construct() {
-        $config = parse_ini_file("config.ini.php");
-        $this->dbhost = $config["dbhost"];
-        $this->dbuser = $config["dbuser"];
-        $this->dbpass = $config["dbpass"];
-        $this->dbdb = $config["dbdb"];
-        $this->dbport = $config["dbport"];
-        $this->sql = new mysqli($this->dbhost, $this->dbuser, $this->dbpass, $this->dbdb, $this->dbport);
+        $config_string = file_get_contents("../config.json");
+        $config = json_decode($config_string, TRUE);
+        $this->dbhost = $config["database"]["host"];
+        $this->dbuser = $config["database"]["user"];
+        $this->dbpass = $config["database"]["pass"];
+        $this->dbdb = $config["database"]["db"];
+        $this->sql = new mysqli($this->dbhost, $this->dbuser, $this->dbpass, $this->dbdb, 3306);
     }
 
     public function __destruct() {
@@ -19,7 +19,7 @@ class functions {
     }
 
     public function getRecords($start, $count) {
-        $result = $this->sql->query("SELECT * FROM blockhound_actions ORDER BY id DESC LIMIT $start,$count");
+        $result = $this->sql->query("SELECT * FROM blockhound_actions ORDER BY id DESC LIMIT ".intval($start).",".intval($count));
         echo $this->sql->error;
         $html = "";
         while ($row = $result->fetch_array(MYSQLI_NUM)) {
