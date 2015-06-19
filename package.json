@@ -10,6 +10,7 @@
   "author": "Radomír Žemlička <info@razem.cz> (http://razem.cz)",
   "license": "BSD-3-Clause",
   "dependencies": {
+    "mysql": "^2.7.0",
     "nbt": "~0.3.0"
   }
 }

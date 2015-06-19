@@ -27,7 +27,7 @@ var rl = ReadLine.createInterface({
     }
 
     // TODO: Process other commands
-    console.log("Command", cmd);
+    console.log("Unknown command", cmd);
 
     processCommands();
   });
