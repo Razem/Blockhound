@@ -9,10 +9,10 @@ Player = require("./lib/player"),
 Logger = require("./lib/logger"),
 ReadLine = require("readline");
 
+// Init
 Logger.init();
 
 // Command processing
-
 var rl = ReadLine.createInterface({
   input: process.stdin,
   output: process.stdout
