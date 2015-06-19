@@ -6,7 +6,7 @@ A simple external Minecraft logger.
 
 0. `npm install`
 0. create config.json
-3. start.bat
+0. start.bat
 
 ### Example of config.json
 ```
