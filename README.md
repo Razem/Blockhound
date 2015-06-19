@@ -7,6 +7,7 @@ Its main functionality is to store the following actions of a player with his cu
 - mineBlock.*
 - useItem.*
 - deaths
+- leaveGame
 - chestOpened
 - trappedChestTriggered
 - hopperInspected
