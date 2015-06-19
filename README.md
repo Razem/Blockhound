@@ -6,8 +6,16 @@ A simple external Minecraft logger.
 Its main functionality is to store the following actions of a player with his current position:
 - mineBlock.*
 - useItem.*
-- chestOpened
 - deaths
+- chestOpened
+- chestOpened
+- trappedChestTriggered
+- hopperInspected
+- dropperInspected
+- dispenserInspected
+- furnaceInteraction
+- brewingstandInteraction
+- mobKills
 
 ## Installation process
 0. `npm install`
