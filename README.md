@@ -4,13 +4,20 @@ A simple external Minecraft logger.
 
 ## Installation process
 0. `npm install`
-0. create config.json
+0. Create config.json
+0. Create DB structure (using db.sql)
 0. start.bat
 
 ### Example of config.json
 ```
 {
-  "worldPath": "C:/Minecraft Server/world"
+  "worldPath": "C:/Minecraft Server/world",
+  "database": {
+    "host": "localhost",
+    "user": "root",
+    "pass": "",
+    "db": "blockhound"
+  }
 }
 ```
 
