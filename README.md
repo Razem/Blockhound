@@ -31,6 +31,7 @@ Its main functionality is to store the following actions of a player with his cu
 
 ## Todo
 - More filter options in the UI
+- Show names instead of the UUIDs in the UI
 
 ## Known issues
 - Stats are updated only every 45 seconds (approximately)
