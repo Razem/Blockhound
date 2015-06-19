@@ -2,6 +2,13 @@
 
 A simple external Minecraft logger.
 
+## What does it do?
+Its main functionality is to store the following actions of a player with his current position:
+- mineBlock.*
+- useItem.*
+- chestOpened
+- deaths
+
 ## Installation process
 0. `npm install`
 0. Create config.json
@@ -20,6 +27,9 @@ A simple external Minecraft logger.
   }
 }
 ```
+
+## Todo
+- Web interface for displaying actions
 
 ## Known issues
 - Stats are updated only every 45 seconds (approximately)
