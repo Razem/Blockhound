@@ -1,0 +1,15 @@
+{
+  "name": "blockhound",
+  "private": true,
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test"
+  },
+  "author": "Radomír Žemlička <info@razem.cz> (http://razem.cz)",
+  "license": "BSD-3-Clause",
+  "dependencies": {
+    "nbt": "~0.3.0"
+  }
+}
