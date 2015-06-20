@@ -12,13 +12,26 @@ require_once './functions.class.php';
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
         <title>Blockhound</title>
         <script type="text/javascript">
-            $(document).ready(function() {
-                var id = $("#queries tr:first td:first").value;
-                var count = $("#queries ").children().length;
-                $("#countNext").value = count;
-                $("#countPrev").value = count;
-                $("#changeNext").value = id - 1;
-                $("#changePrev").value = id + count.value + 1;
+            $(document).ready(function () {
+                var tmp = [];
+                var values = [];
+                var items = location.search.substr(1).split("&");
+                for (var i = 0; i < items.length; i++) {
+                    tmp = items[i].split("=");
+                    values[i] = parseInt(tmp[1]);
+                }
+                var prev = values[0] + values[1] + 1;
+                if (prev < 0) {
+                    prev = 0;
+                }
+                var next = values[0] - values[1] - 1;
+                if (next < 0) {
+                    next = 0;
+                }
+                $("#changePrev").val(prev);
+                $("#changeNext").val(next);
+                $("#countPrev").val(values[1]);
+                $("#countNext").val(values[1]);
             });
         </script>
     </head>
@@ -35,7 +48,7 @@ require_once './functions.class.php';
                     <thead>
                     <td>ID</td><td>Date</td><td>Name</td><td>World</td><td>Coordinations</td><td>Action</td><td>Count</td>
                     </thead>
-                    <tbody id="queries">
+                    <tbody>
                         <?php
                         if (isset($_GET["submit"])) {
                             $start = 0;
@@ -52,15 +65,15 @@ require_once './functions.class.php';
                         ?>
                     </tbody>
                 </table>
-                <form action="index.php" method="GET">
-                    <input id="changePrev" type="text" name="start" value="0" style="display: none;"/>
-                    <input id="countPrev" type="text" name="count" value="0" style="display: none;"/>
-                    <input id="prev" type="submit" name="submit-prev" value="Prev"/>
+                <form id="prev" action="index.php" method="GET">
+                    <input id="changePrev" type="text" name="start" value="" style="display: none;"/>
+                    <input id="countPrev" type="text" name="count" value="" style="display: none;"/>
+                    <input type="submit" name="submit" value="Prev"/>
                 </form>
-                <form action="index.php" method="GET">
-                    <input id="changeNext" type="text" name="start" value="0" style="display: none;"/>
-                    <input id="countNext" type="text" name="count" value="0" style="display: none;"/>
-                    <input id="next" type="submit" name="submit-next" value="Next"/>
+                <form id="next" action="index.php" method="GET">
+                    <input id="changeNext" type="text" name="start" value="" style="display: none;"/>
+                    <input id="countNext" type="text" name="count" value="" style="display: none;"/>
+                    <input type="submit" name="submit" value="Next"/>
                 </form>
             </div>
         </div>
