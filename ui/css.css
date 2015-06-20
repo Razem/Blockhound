@@ -10,6 +10,9 @@ body {
 input {
     width: 119px;
 }
+label{
+    width: 60px;
+}
 table {
     margin: auto;
     border: #151515 1px solid;

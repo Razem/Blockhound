@@ -9,11 +9,11 @@ require_once './functions.class.php';
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="author" content="Martin Brychta, martin@brychta.name, http://brychta.name" />
         <title>[Blockhound]</title>
-        
+
         <link rel="stylesheet" type="text/css" href="css.css" />
         <link rel="stylesheet" type="text/css" href="./jqueryui/jquery-ui.css" />
         <link rel="stylesheet" type="text/css" href="./jqueryui/jquery-ui-timepicker-addon.css" />
-        
+
         <script type="text/javascript" src="./jqueryui/external/jquery/jquery.js"></script>
         <script type="text/javascript" src="./jqueryui/jquery-ui.min.js"></script>
         <script type="text/javascript" src="./jqueryui/jquery-ui-timepicker-addon.js"></script>
@@ -26,11 +26,11 @@ require_once './functions.class.php';
                     tmp = items[i].split("=");
                     values[i] = parseInt(tmp[1]);
                 }
-                var prev = values[0] + values[1] + 1;
+                var prev = values[0] + values[1];
                 if (prev < 0) {
                     prev = 0;
                 }
-                var next = values[0] - values[1] - 1;
+                var next = values[0] - values[1];
                 if (next < 0) {
                     next = 0;
                 }
@@ -40,6 +40,7 @@ require_once './functions.class.php';
                 $("#countNext").val(values[1]);
 
                 $(".button").button();
+                $("#radioset").buttonset();
                 $(".date").datetimepicker({
                     controlType: "select",
                     oneLine: true,
@@ -54,12 +55,36 @@ require_once './functions.class.php';
         <div id="outside">
             <div id="inside">
                 <form action="index.php" method="GET">
-                    START :<input type="text" name="start" value="0" /><br />
-                    COUNT :<input type="text" name="count" value="20" /><br />
-                    NAME &nbsp;:<input type="text" name="name" /><br />
-                    DATE &nbsp;:<input class="date" type="text" name="date" /><br />
-                    COORD :<input class="coord" type="text" name="X" placeholder="X"><input class="coord" type="text" name="Y" placeholder="Y"><input class="coord" type="text" name="Z" placeholder="Z"><br />
-                    RADIUS:<input type="text" name="radius"><br />
+                    <table>
+                        <thead>
+                        <td>START</td><td>COUNT</td><td>NAME</td><td>DATE</td><td>COORD</td><td>RADIUS</td><td>ORDER</td>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <input type="text" name="start" value="0" />
+                                </td>
+                                <td>
+                                    <input type="text" name="count" value="20" />
+                                </td>
+                                <td>
+                                    <input type="text" name="name" />
+                                </td>
+                                <td>
+                                    <input class="date" type="text" name="date" />
+                                </td>
+                                <td>
+                                    <input class="coord" type="text" name="X" placeholder="X"><input class="coord" type="text" name="Y" placeholder="Y"><input class="coord" type="text" name="Z" placeholder="Z">
+                                </td>
+                                <td>
+                                    <input type="text" name="radius">
+                                </td>
+                                <td>
+                                    <span id="radioset"><input type="radio" id="radio1" name="order" checked="checked" value="DESC" /><label for="radio1">New</label><input type="radio" id="radio2" name="order" value="ASC" /><label for="radio2">Old</label></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
                     <input class="button" type="submit" name="submit" value="Submit"/>
                 </form>
                 <table>
