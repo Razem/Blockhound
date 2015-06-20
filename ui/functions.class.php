@@ -43,13 +43,30 @@ class functions {
             if (strtotime($now) - strtotime($row[2]) < 604800) {
                 return $row[1];
             } else {
-                $this->sql->query("DELETE FROM blockhound_players_names WHERE uuid = '" . $uuid . "'");
+                $this->sql->query("DELETE FROM blockhound_players_names WHERE uuid='" . $uuid . "'");
             }
         }
         $json = file_get_contents("https://sessionserver.mojang.com/session/minecraft/profile/" . $uuid);
         $profile = json_decode($json, true);
         $this->sql->query("INSERT INTO blockhound_players_names(uuid, name, date_cached) VALUES ('" . $uuid . "', '" . $profile["name"] . "', '" . $now . "')");
         return "<span style='color: #99ff99;'> " . $profile["name"] . "</span>";
+    }
+
+    public function getUUID($name) {
+        $result = $this->sql->query("SELECT * FROM blockhound_players_names WHERE name='" . $name . "'");
+        $now = date("Y-m-d H:i:s");
+        if ($result != null) {
+            $row = $result->fetch_array(MYSQLI_NUM);
+            if (strtotime($now) - strtotime($row[2]) < 604800) {
+                return $row[0];
+            } else {
+                $this->sql->query("DELETE FROM blockhound_players_names WHERE name='" . $name . "'");
+            }
+        }
+        $json = file_get_contents("https://api.mojang.com/users/profiles/minecraft/" . $name);
+        $profile = json_decode($json, true);
+        $this->sql->query("INSERT INTO blockhound_players_names(uuid, name, date_cached) VALUES ('" . $profile["id"] . "', '" . $name . "', '" . $now . "')");
+        return $profile["name"];
     }
 
 }
