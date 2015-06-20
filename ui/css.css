@@ -12,6 +12,9 @@ table {
     margin: auto;
     border: #111111 1px solid;
 }
+thead {
+    border-bottom: #333333 1px solid;
+}
 td {
     border-left: #333333 1px solid;
     border-right: #333333 1px solid;
