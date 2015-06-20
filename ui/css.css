@@ -1,11 +1,14 @@
 body {
     font-family: monospace;
-    font-size: 120%;
+    font-size: 1.1em;
     color: silver;
     background-color: black;
     height: 100%;
     width: 100%;
     text-align:center;
+}
+input {
+    width: 119px;
 }
 table {
     margin: auto;
@@ -42,4 +45,7 @@ table tr:nth-child(even){
 }
 #next{
     float: right;
+}
+.coord {
+    width: 37px;
 }
