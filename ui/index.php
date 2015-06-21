@@ -57,7 +57,7 @@ require_once './functions.class.php';
                 <form action="index.php" method="GET">
                     <table>
                         <thead>
-                        <td>START</td><td>COUNT</td><td>NAME</td><td>DATE</td><td>COORD</td><td>RADIUS</td><td>ORDER</td>
+                        <td>START</td><td>COUNT</td><td>NAME</td><td>DATE</td><td>COORDS</td><td>RADIUS</td><td>ORDER</td>
                         </thead>
                         <tbody>
                             <tr>
@@ -89,7 +89,7 @@ require_once './functions.class.php';
                 </form>
                 <table>
                     <thead>
-                    <td>ID</td><td>Date</td><td>Name</td><td>World</td><td>Coordinations</td><td>Action</td><td>Count</td>
+                    <td>ID</td><td>Date</td><td>Name</td><td>World</td><td>Coordinates</td><td>Action</td><td>Count</td>
                     </thead>
                     <tbody>
                         <?php
