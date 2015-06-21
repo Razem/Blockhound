@@ -39,7 +39,7 @@ Its main functionality is to store the following actions of a player with his cu
 
 ## Todo
 - More filter options in the UI
-- UI Polish
+- Improve UI design
 
 ## Known issues
 - Stats are updated only every 45 seconds (approximately)
