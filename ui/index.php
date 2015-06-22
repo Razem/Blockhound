@@ -95,6 +95,7 @@ require_once './functions.class.php';
                     </thead>
                     <tbody id="queries">
                         <?php
+                        // ?start=&name=&date=&X=&Y=&Z=&order=&world=&timeRadius=&coordsRadius=&action=&count=&submit=
                         if (isset($_GET["submit"])) {
                             $start = 0;
                             $count = 0;
