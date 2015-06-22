@@ -36,13 +36,13 @@ require_once './functions.class.php';
                             </tr>
                             <tr>
                                 <td>
-                                    <input type="text" name="name" />
+                                    <input id="name" type="text" name="name" />
                                 </td>
                                 <td>
-                                    <input class="date" type="text" name="date" />
+                                    <input id="date" type="text" name="date" />
                                 </td>
                                 <td>
-                                    <input class="coord" type="text" name="X" placeholder="X" /><input class="coord" type="text" name="Y" placeholder="Y" /><input class="coord" type="text" name="Z" placeholder="Z" />
+                                    <input class="coord" id="X" type="text" name="X" placeholder="X" /><input class="coord" id="Y" type="text" name="Y" placeholder="Y" /><input class="coord" id="Z" type="text" name="Z" placeholder="Z" />
                                 </td>
                                 <td>
                                     <div id="radioset">
@@ -56,21 +56,21 @@ require_once './functions.class.php';
                             <tr>
                                 <td>
                                     <select id="world" name="world">
-                                        <option></option>
+                                        <option value=""></option>
                                         <option value="0">Overworld</option>
                                         <option value="-1">Nether</option>
                                         <option value="1">End</option>
                                     </select>
                                 </td>
                                 <td>
-                                    <input class="time" type="text" name="timeRadius" />
+                                    <input id="timeRadius" type="text" name="timeRadius" />
                                 </td>
                                 <td>
-                                    <input type="text" name="coordsRadius" />
+                                    <input id="coordsRadius" type="text" name="coordsRadius" />
                                 </td>
                                 <td>
                                     <select id="action" name="action">
-                                        <option></option>
+                                        <option value=""></option>
                                         <option>mineBlock.</option>
                                         <option>useItem.</option>
                                         <option>killEntity.</option>
@@ -88,7 +88,7 @@ require_once './functions.class.php';
                             </tr>
                         </tbody>
                     </table>
-                    <input type="text" name="count" value="20" style = "width: 20px;"/>
+                    <input id="count" type="text" name="count" value="20" style = "width: 20px;"/>
                     <input class="button" type="submit" name="submit" value="Submit"/>
                 </form>
                 <table>

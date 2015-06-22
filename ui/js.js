@@ -23,17 +23,37 @@ function main() {
         next = 0;
     }
 
+    if (location.search != "") {
+        $("#name").val(values[1]);
+        $("#date").val(values[2]);
+        $("#X").val(values[3]);
+        $("#Y").val(values[4]);
+        $("#Z").val(values[5]);
+        if (values[6] === "0") {
+            $("#radio1").attr("checked", true);
+            $("#radio2").attr("checked", false);
+        } else if (values[6] === "1") {
+            $("#radio2").attr("checked", true);
+            $("#radio1").attr("checked", false);
+        }
+        $("#world").val(values[7]);
+        $("#timeRadius").val(values[8]);
+        $("#coordsRadius").val(values[9]);
+        $("#action").val(values[10]);
+        $("#count").val(values[11]);
+    }
+
     $(".button").button();
     $("#radioset").buttonset();
     $("#world").selectmenu();
     $("#action").selectmenu();
-    $(".date").datetimepicker({
+    $("#date").datetimepicker({
         controlType: "select",
         oneLine: true,
         dateFormat: "yy-mm-dd",
         timeFormat: "HH:mm:ss"
     });
-    $(".time").timepicker({
+    $("#timeRadius").timepicker({
         controlType: "select",
         oneLine: true,
         timeFormat: "H:m"
