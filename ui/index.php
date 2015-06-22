@@ -46,7 +46,7 @@ require_once './functions.class.php';
                                 </td>
                                 <td>
                                     <div id="radioset">
-                                        <input type="radio" id="radio1" name="order" checked="checked" value="DESC" /><label for="radio1">New</label><input type="radio" id="radio2" name="order" value="ASC" /><label for="radio2">Old</label>
+                                        <input type="radio" id="radio1" name="order" checked="checked" value="0" /><label for="radio1">New</label><input type="radio" id="radio2" name="order" value="1" /><label for="radio2">Old</label>
                                     </div>
                                 </td>
                             </tr>
@@ -56,6 +56,7 @@ require_once './functions.class.php';
                             <tr>
                                 <td>
                                     <select id="world" name="world">
+                                        <option></option>
                                         <option value="0">Overworld</option>
                                         <option value="-1">Nether</option>
                                         <option value="1">End</option>
@@ -69,6 +70,7 @@ require_once './functions.class.php';
                                 </td>
                                 <td>
                                     <select id="action" name="action">
+                                        <option></option>
                                         <option>mineBlock.</option>
                                         <option>useItem.</option>
                                         <option>killEntity.</option>
@@ -98,18 +100,18 @@ require_once './functions.class.php';
                         $values = filter_input_array(INPUT_GET);
                         // ?start=&name=&date=&X=&Y=&Z=&order=&world=&timeRadius=&coordsRadius=&action=&count=&submit=
                         if (isset($values["submit"])) {
-                            $start = "";
-                            $name = "";
-                            $date = "";
-                            $x = "";
-                            $y = "";
-                            $z = "";
-                            $order = "";
-                            $world = "";
-                            $timeRadius = "";
-                            $coordsRadius = "";
-                            $action = "";
-                            $count = "";
+                            $start = null;
+                            $name = null;
+                            $date = null;
+                            $x = null;
+                            $y = null;
+                            $z = null;
+                            $order = null;
+                            $world = null;
+                            $timeRadius = null;
+                            $coordsRadius = null;
+                            $action = null;
+                            $count = null;
                             if (isset($values["start"])) {
                                 $start = $values["start"];
                             }
@@ -129,13 +131,17 @@ require_once './functions.class.php';
                                 $z = $values["z"];
                             }
                             if (isset($values["order"])) {
-                                $order = $values["order"];
+                                if ($values["order"] === "0") {
+                                    $order = "DESC";
+                                } else if ($values["order"] === "1") {
+                                    $order = "ASC";
+                                }
                             }
                             if (isset($values["world"])) {
                                 $world = $values["world"];
                             }
                             if (isset($values["timeRadius"])) {
-                                $tmp = split(":", $values["timeRadius"]);
+                                $tmp = explode(":", $values["timeRadius"]);
                                 $timeRadius = $tmp[0] + " hour " + $tmp[1] + " minute";
                             }
                             if (isset($values["coordsRadius"])) {

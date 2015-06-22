@@ -2,7 +2,7 @@
 
 class functions {
 
-    private $sql;
+    private $pdo;
 
     public function __construct() {
         $config_string = file_get_contents("../config.json");
@@ -11,11 +11,16 @@ class functions {
         $dbuser = $config["database"]["user"];
         $dbpass = $config["database"]["pass"];
         $dbdb = $config["database"]["db"];
-        $this->sql = new mysqli($dbhost, $dbuser, $dbpass, $dbdb, 3306);
+        try {
+            $this->pdo = new PDO("mysql:host=$dbhost;dbname=$dbdb", $dbuser, $dbpass);
+            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        } catch (PDOException $e) {
+            echo 'Connection failed: ' . $e->getMessage();
+        }
     }
 
     public function __destruct() {
-        $this->sql->close();
+        $this->pdo = null;
     }
 
     public function constructQuery($start, $name, $date, $x, $y, $z, $order, $world, $timeRadius, $coordsRadius, $action, $count) {
@@ -53,38 +58,64 @@ class functions {
         if ($action != "") {
             $query .= "action_name=:action AND ";
         }
-        $query .= "1=1 ";
-        if ($order != "") {
-            $query .= "ORDER BY id :order ";
+        $query .= "1=1 ORDER BY id $order LIMIT :start, :count";
+        $prepared = $this->pdo->prepare($query);
+
+        if ($name != "") {
+            $prepared->bindParam(":uuid", ($this->getUUID($name)));
         }
-        $query .= "LIMIT :start, :count";
-        $prepared = $this->sql->prepare($query);
-        $prepared->bind_param(":uuid", getUUID($name));
-        $prepared->bind_param(":dateLow", date("Y-m-d H:i:s", strtotime($date) - strtotime($timeRadius, $date)));
-        $prepared->bind_param(":dateHigh", date("Y-m-d H:i:s", strtotime($date) + strtotime($timeRadius, $date)));
-        $prepared->bind_param(":world", intval($world));
-        $prepared->bind_param(":x", intval($x));
-        $prepared->bind_param(":y", intval($y));
-        $prepared->bind_param(":z", intval($z));
-        $prepared->bind_param(":XLow", intval($x) - intval($coordsRadius));
-        $prepared->bind_param(":XHigh", intval($x) + intval($coordsRadius));
-        $prepared->bind_param(":YLow", intval($y) - intval($coordsRadius));
-        $prepared->bind_param(":YHigh", intval($y) + intval($coordsRadius));
-        $prepared->bind_param(":ZLow", intval($z) - intval($coordsRadius));
-        $prepared->bind_param(":ZHigh", intval($z) + intval($coordsRadius));
-        $prepared->bind_param(":action", $action + '%');
-        $prepared->bind_param(":order", $order);
-        $prepared->bind_param(":start", intval($start));
-        $prepared->bind_param(":count", intval($count));
+        if ($date != "" && $timeRadius != "") {
+            $prepared->bindParam(":dateLow", (date("Y-m-d H:i:s", (strtotime($date) - strtotime($timeRadius, strtotime($date))))));
+            $prepared->bindParam(":dateHigh", (date("Y-m-d H:i:s", (strtotime($date) + strtotime($timeRadius, strtotime($date))))));
+        }
+        if ($world != "") {
+            $prepared->bindParam(":world", (intval($world)), PDO::PARAM_INT);
+        }
+        if ($coordsRadius != "") {
+            if ($x != "") {
+                $xLow = intval($x) - intval($coordsRadius);
+                $prepared->bindParam(":XLow", ($xLow));
+                $xHigh = intval($x) + intval($coordsRadius);
+                $prepared->bindParam(":XHigh", ($xHigh));
+            }
+            if ($y != "") {
+                $yLow = intval($y) - intval($coordsRadius);
+                $prepared->bindParam(":YLow", ($yLow));
+                $yHigh = intval($y) + intval($coordsRadius);
+                $prepared->bindParam(":YHigh", ($yHigh));
+            }
+            if ($z != "") {
+                $zLow = intval($z) - intval($coordsRadius);
+                $prepared->bindParam(":ZLow", ($zLow));
+                $zHigh = intval($z) + intval($coordsRadius);
+                $prepared->bindParam(":ZHigh", ($zHigh));
+            }
+        } else {
+            if ($x != "") {
+                $prepared->bindParam(":x", (intval($x)));
+            }
+            if ($x != "") {
+                $prepared->bindParam(":y", (intval($y)));
+            }
+            if ($x != "") {
+                $prepared->bindParam(":z", (intval($z)));
+            }
+        }
+        if ($action != "") {
+            $action .= "%";
+            $prepared->bindParam(":action", ($action));
+        }
+        $prepared->bindParam(":start", (intval($start)), PDO::PARAM_INT);
+        $prepared->bindParam(":count", (intval($count)), PDO::PARAM_INT);
         return $prepared;
     }
 
     // ?start=&name=&date=&X=&Y=&Z=&order=&world=&timeRadius=&coordsRadius=&action=&count=&submit=
     public function getRecords($query) {
         $query->execute();
-        $result = $query->get_result();
+        $result = $query->fetchAll(PDO::FETCH_NUM);
         $html = "";
-        while ($row = $result->fetch_array(MYSQLI_NUM)) {
+        foreach ($result as $row) {
             $world_type = intval($row[3]);
             if ($world_type === 1) {
                 $world_type = "the End";
@@ -99,36 +130,36 @@ class functions {
     }
 
     public function getName($uuid) {
-        $result = $this->sql->query("SELECT * FROM blockhound_players_names WHERE uuid='" . $uuid . "'");
+        $result = $this->pdo->query("SELECT * FROM blockhound_players_names WHERE uuid='" . $uuid . "'");
         $now = date("Y-m-d H:i:s");
         if ($result != null) {
-            $row = $result->fetch_array(MYSQLI_NUM);
+            $row = $result->fetchAll(PDO::FETCH_NUM)[0];
             if (strtotime($now) - strtotime($row[2]) < 604800) {
                 return $row[1];
             } else {
-                $this->sql->query("DELETE FROM blockhound_players_names WHERE uuid='" . $uuid . "'");
+                $this->pdo->query("DELETE FROM blockhound_players_names WHERE uuid='" . $uuid . "'");
             }
         }
         $json = file_get_contents("https://sessionserver.mojang.com/session/minecraft/profile/" . $uuid);
         $profile = json_decode($json, true);
-        $this->sql->query("INSERT INTO blockhound_players_names(uuid, name, date_cached) VALUES ('" . $uuid . "', '" . $profile["name"] . "', '" . $now . "')");
+        $this->pdo->query("INSERT INTO blockhound_players_names(uuid, name, date_cached) VALUES ('" . $uuid . "', '" . $profile["name"] . "', '" . $now . "')");
         return "<span style='color: #99ff99;'> " . $profile["name"] . "</span>";
     }
 
     public function getUUID($name) {
-        $result = $this->sql->query("SELECT * FROM blockhound_players_names WHERE name='" . $name . "'");
+        $result = $this->pdo->query("SELECT * FROM blockhound_players_names WHERE name='" . $name . "'");
         $now = date("Y-m-d H:i:s");
         if ($result != null) {
-            $row = $result->fetch_array(MYSQLI_NUM);
+            $row = $result->fetchAll(PDO::FETCH_NUM)[0];
             if (strtotime($now) - strtotime($row[2]) < 604800) {
                 return $row[0];
             } else {
-                $this->sql->query("DELETE FROM blockhound_players_names WHERE name='" . $name . "'");
+                $this->pdo->query("DELETE FROM blockhound_players_names WHERE name='" . $name . "'");
             }
         }
         $json = file_get_contents("https://api.mojang.com/users/profiles/minecraft/" . $name);
         $profile = json_decode($json, true);
-        $this->sql->query("INSERT INTO blockhound_players_names(uuid, name, date_cached) VALUES ('" . $profile["id"] . "', '" . $name . "', '" . $now . "')");
+        $this->pdo->query("INSERT INTO blockhound_players_names(uuid, name, date_cached) VALUES ('" . $profile["id"] . "', '" . $name . "', '" . $now . "')");
         return $profile["name"];
     }
 
