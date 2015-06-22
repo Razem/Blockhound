@@ -9,10 +9,10 @@ function main() {
             values[i] = "";
         }
     }
-    if (values[6] === 0) {
+    if (values[6] === "0") {
         prev = parseInt(values[0]) + parseInt(values[11]);
         next = parseInt(values[0]) - parseInt(values[11]);
-    } else if (values[6] === 1) {
+    } else if (values[6] === "1") {
         prev = parseInt(values[0]) - parseInt(values[11]);
         next = parseInt(values[0]) + parseInt(values[11]);
     }
