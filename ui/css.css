@@ -7,6 +7,9 @@ body {
     width: 100%;
     text-align:center;
 }
+select {
+    width: 119px;
+}
 input {
     width: 119px;
 }

@@ -17,56 +17,24 @@ require_once './functions.class.php';
         <script type="text/javascript" src="./jqueryui/external/jquery/jquery.js"></script>
         <script type="text/javascript" src="./jqueryui/jquery-ui.min.js"></script>
         <script type="text/javascript" src="./jqueryui/jquery-ui-timepicker-addon.js"></script>
+        <script type="text/javascript" src="./js.js"></script>
         <script type="text/javascript">
             $(document).ready(function () {
-                var tmp = [];
-                var values = [];
-                var items = location.search.substr(1).split("&");
-                for (var i = 0; i < items.length; i++) {
-                    tmp = items[i].split("=");
-                    values[i] = parseInt(tmp[1]);
-                }
-                var prev = values[0] + values[1];
-                if (prev < 0) {
-                    prev = 0;
-                }
-                var next = values[0] - values[1];
-                if (next < 0) {
-                    next = 0;
-                }
-                $("#changePrev").val(prev);
-                $("#changeNext").val(next);
-                $("#countPrev").val(values[1]);
-                $("#countNext").val(values[1]);
-
-                $(".button").button();
-                $("#radioset").buttonset();
-                $(".date").datetimepicker({
-                    controlType: "select",
-                    oneLine: true,
-                    dateFormat: "yy-mm-dd",
-                    timeFormat: "HH:mm:ss"
-                });
-            });
-        </script>
+                main();
+            });</script>
     </head>
 
     <body>
         <div id="outside">
             <div id="inside">
                 <form action="index.php" method="GET">
+                    <input type="text" name="start" value="0" style ="display: none;" />
                     <table>
-                        <thead>
-                        <td>START</td><td>COUNT</td><td>NAME</td><td>DATE</td><td>COORDS</td><td>RADIUS</td><td>ORDER</td>
-                        </thead>
                         <tbody>
                             <tr>
-                                <td>
-                                    <input type="text" name="start" value="0" />
-                                </td>
-                                <td>
-                                    <input type="text" name="count" value="20" />
-                                </td>
+                                <td>NAME</td><td>DATE & TIME</td><td>COORDS</td><td>ORDER</td>
+                            </tr>
+                            <tr>
                                 <td>
                                     <input type="text" name="name" />
                                 </td>
@@ -74,24 +42,58 @@ require_once './functions.class.php';
                                     <input class="date" type="text" name="date" />
                                 </td>
                                 <td>
-                                    <input class="coord" type="text" name="X" placeholder="X"><input class="coord" type="text" name="Y" placeholder="Y"><input class="coord" type="text" name="Z" placeholder="Z">
+                                    <input class="coord" type="text" name="X" placeholder="X" /><input class="coord" type="text" name="Y" placeholder="Y" /><input class="coord" type="text" name="Z" placeholder="Z" />
                                 </td>
                                 <td>
-                                    <input type="text" name="radius">
+                                    <div id="radioset">
+                                        <input type="radio" id="radio1" name="order" checked="checked" value="DESC" /><label for="radio1">New</label><input type="radio" id="radio2" name="order" value="ASC" /><label for="radio2">Old</label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>WORLD</td><td>TIME RADIUS</td><td>COORDS RADIUS</td><td>ACTION</td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <select id="world" name="world">
+                                        <option>Overworld</option>
+                                        <option>Nether</option>
+                                        <option>End</option>
+                                    </select>
                                 </td>
                                 <td>
-                                    <span id="radioset"><input type="radio" id="radio1" name="order" checked="checked" value="DESC" /><label for="radio1">New</label><input type="radio" id="radio2" name="order" value="ASC" /><label for="radio2">Old</label></span>
+                                    <input class="time" type="text" name="timeRadius" />
+                                </td>
+                                <td>
+                                    <input type="text" name="coordsRadius" />
+                                </td>
+                                <td>
+                                    <select id="action" name="action">
+                                        <option>mineBlock.*</option>
+                                        <option>useItem.*</option>
+                                        <option>killEntity.*</option>
+                                        <option>deaths</option>
+                                        <option>leaveGame</option>
+                                        <option>chestOpened</option>
+                                        <option>trappedChestTriggered</option>
+                                        <option>hopperInspected</option>
+                                        <option>dropperInspected</option>
+                                        <option>dispenserInspected</option>
+                                        <option>furnaceInteraction</option>
+                                        <option>brewingstandInteraction</option>
+                                    </select>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
+                    <input type="text" name="count" value="20" style = "width: 20px;"/>
                     <input class="button" type="submit" name="submit" value="Submit"/>
                 </form>
                 <table>
                     <thead>
                     <td>ID</td><td>Date</td><td>Name</td><td>World</td><td>Coordinates</td><td>Action</td><td>Count</td>
                     </thead>
-                    <tbody>
+                    <tbody id="queries">
                         <?php
                         if (isset($_GET["submit"])) {
                             $start = 0;
@@ -108,16 +110,8 @@ require_once './functions.class.php';
                         ?>
                     </tbody>
                 </table>
-                <form id="prev" action="index.php" method="GET">
-                    <input id="changePrev" type="text" name="start" value="" style="display: none;"/>
-                    <input id="countPrev" type="text" name="count" value="" style="display: none;"/>
-                    <input class="button" type="submit" name="submit" value="Prev"/>
-                </form>
-                <form id="next" action="index.php" method="GET">
-                    <input id="changeNext" type="text" name="start" value="" style="display: none;"/>
-                    <input id="countNext" type="text" name="count" value="" style="display: none;"/>
-                    <input class="button" type="submit" name="submit" value="Next"/>
-                </form>
+                <button class="button next" onclick="change('prev')">Prev</button>
+                <button class="button next" onclick="change('next')">Next</button>
             </div>
         </div>
     </body>
