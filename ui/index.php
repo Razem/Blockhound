@@ -159,7 +159,7 @@ require_once './functions.class.php';
                         ?>
                     </tbody>
                 </table>
-                <button class="button next" onclick="change('prev')">Prev</button>
+                <button class="button prev" onclick="change('prev')">Prev</button>
                 <button class="button next" onclick="change('next')">Next</button>
             </div>
         </div>
