@@ -55,3 +55,7 @@ table tr:nth-child(even){
 .coord {
     width: 37px;
 }
+.ui-widget{
+
+    font-size: 70% !important;
+}

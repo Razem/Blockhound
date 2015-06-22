@@ -56,9 +56,9 @@ require_once './functions.class.php';
                             <tr>
                                 <td>
                                     <select id="world" name="world">
-                                        <option>Overworld</option>
-                                        <option>Nether</option>
-                                        <option>End</option>
+                                        <option value="0">Overworld</option>
+                                        <option value="-1">Nether</option>
+                                        <option value="1">End</option>
                                     </select>
                                 </td>
                                 <td>
@@ -69,9 +69,9 @@ require_once './functions.class.php';
                                 </td>
                                 <td>
                                     <select id="action" name="action">
-                                        <option>mineBlock.*</option>
-                                        <option>useItem.*</option>
-                                        <option>killEntity.*</option>
+                                        <option>mineBlock.</option>
+                                        <option>useItem.</option>
+                                        <option>killEntity.</option>
                                         <option>deaths</option>
                                         <option>leaveGame</option>
                                         <option>chestOpened</option>
@@ -95,18 +95,60 @@ require_once './functions.class.php';
                     </thead>
                     <tbody id="queries">
                         <?php
+                        $values = filter_input_array(INPUT_GET);
                         // ?start=&name=&date=&X=&Y=&Z=&order=&world=&timeRadius=&coordsRadius=&action=&count=&submit=
-                        if (isset($_GET["submit"])) {
-                            $start = 0;
-                            $count = 0;
-                            if (isset($_GET["start"]) && is_string($_GET["start"])) {
-                                $start = $_GET["start"];
+                        if (isset($values["submit"])) {
+                            $start = "";
+                            $name = "";
+                            $date = "";
+                            $x = "";
+                            $y = "";
+                            $z = "";
+                            $order = "";
+                            $world = "";
+                            $timeRadius = "";
+                            $coordsRadius = "";
+                            $action = "";
+                            $count = "";
+                            if (isset($values["start"])) {
+                                $start = $values["start"];
                             }
-                            if (isset($_GET["count"]) && is_string($_GET["count"])) {
-                                $count = $_GET["count"];
+                            if (isset($values["name"])) {
+                                $name = $values["name"];
+                            }
+                            if (isset($values["date"])) {
+                                $date = $values["date"];
+                            }
+                            if (isset($values["x"])) {
+                                $x = $values["x"];
+                            }
+                            if (isset($values["y"])) {
+                                $y = $values["y"];
+                            }
+                            if (isset($values["z"])) {
+                                $z = $values["z"];
+                            }
+                            if (isset($values["order"])) {
+                                $order = $values["order"];
+                            }
+                            if (isset($values["world"])) {
+                                $world = $values["world"];
+                            }
+                            if (isset($values["timeRadius"])) {
+                                $tmp = split(":", $values["timeRadius"]);
+                                $timeRadius = $tmp[0] + " hour " + $tmp[1] + " minute";
+                            }
+                            if (isset($values["coordsRadius"])) {
+                                $coordsRadius = $values["coordsRadius"];
+                            }
+                            if (isset($values["action"])) {
+                                $action = $values["action"];
+                            }
+                            if (isset($values["count"])) {
+                                $count = $values["count"];
                             }
                             $f = new functions();
-                            echo $f->getRecords($start, $count);
+                            echo $f->getRecords($f->constructQuery($start, $name, $date, $x, $y, $z, $order, $world, $timeRadius, $coordsRadius, $action, $count));
                         }
                         ?>
                     </tbody>

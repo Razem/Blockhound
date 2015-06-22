@@ -24,20 +24,20 @@ class functions {
             $query .= "uuid=:uuid AND ";
         }
         if ($date != "" && $timeRadius != "") {
-            $query .= "date_action BETWEEN :lowDate AND :highDate AND ";
+            $query .= "date_action BETWEEN :dateLow AND :dateHigh AND ";
         }
         if ($world != "") {
             $query .= "world_type=:world AND ";
         }
         if ($coordsRadius != "") {
             if ($x != "") {
-                $query .= "pos_x BETWEEN :lowCoord AND :highCoord AND ";
+                $query .= "pos_x BETWEEN :XLow AND :XHigh AND ";
             }
             if ($y != "") {
-                $query .= "pos_y BETWEEN :lowCoord AND :highCoord AND ";
+                $query .= "pos_y BETWEEN :YLow AND :YHigh AND ";
             }
             if ($z != "") {
-                $query .= "pos_z BETWEEN :lowCoord AND :highCoord AND ";
+                $query .= "pos_z BETWEEN :ZLow AND :ZHigh AND ";
             }
         } else {
             if ($x != "") {
@@ -58,11 +58,31 @@ class functions {
             $query .= "ORDER BY id :order ";
         }
         $query .= "LIMIT :start, :count";
+        $prepared = $this->sql->prepare($query);
+        $prepared->bind_param(":uuid", getUUID($name));
+        $prepared->bind_param(":dateLow", date("Y-m-d H:i:s", strtotime($date) - strtotime($timeRadius, $date)));
+        $prepared->bind_param(":dateHigh", date("Y-m-d H:i:s", strtotime($date) + strtotime($timeRadius, $date)));
+        $prepared->bind_param(":world", intval($world));
+        $prepared->bind_param(":x", intval($x));
+        $prepared->bind_param(":y", intval($y));
+        $prepared->bind_param(":z", intval($z));
+        $prepared->bind_param(":XLow", intval($x) - intval($coordsRadius));
+        $prepared->bind_param(":XHigh", intval($x) + intval($coordsRadius));
+        $prepared->bind_param(":YLow", intval($y) - intval($coordsRadius));
+        $prepared->bind_param(":YHigh", intval($y) + intval($coordsRadius));
+        $prepared->bind_param(":ZLow", intval($z) - intval($coordsRadius));
+        $prepared->bind_param(":ZHigh", intval($z) + intval($coordsRadius));
+        $prepared->bind_param(":action", $action + '%');
+        $prepared->bind_param(":order", $order);
+        $prepared->bind_param(":start", intval($start));
+        $prepared->bind_param(":count", intval($count));
+        return $prepared;
     }
 
     // ?start=&name=&date=&X=&Y=&Z=&order=&world=&timeRadius=&coordsRadius=&action=&count=&submit=
     public function getRecords($query) {
-        $result = $this->sql->query("SELECT * FROM blockhound_actions ORDER BY id DESC LIMIT " . intval($start) . "," . intval($count));
+        $query->execute();
+        $result = $query->get_result();
         $html = "";
         while ($row = $result->fetch_array(MYSQLI_NUM)) {
             $world_type = intval($row[3]);
@@ -70,7 +90,7 @@ class functions {
                 $world_type = "the End";
             } else if ($world_type === -1) {
                 $world_type = "the Nether";
-            } else {
+            } else if ($world_type === 0) {
                 $world_type = "the Overworld";
             }
             $html .= "<tr><td>$row[0]</td><td>$row[1]</td><td>" . $this->getName($row[2]) . "</td><td>$world_type</td><td>$row[4] | $row[5] | $row[6]</td><td>$row[7]</td><td>$row[8]</td></tr>";

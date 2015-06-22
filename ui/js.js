@@ -36,7 +36,7 @@ function main() {
     $(".time").timepicker({
         controlType: "select",
         oneLine: true,
-        timeFormat: "HH:mm:ss"
+        timeFormat: "H:m"
     });
 }
 
