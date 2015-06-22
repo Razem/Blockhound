@@ -8,14 +8,15 @@ require_once './functions.class.php';
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta name="author" content="Martin Brychta, martin@brychta.name, http://brychta.name" />
+        <link rel="icon" type="image/vnd.microsoft.icon" href="favicon.ico" />
         <title>[Blockhound]</title>
 
         <link rel="stylesheet" type="text/css" href="css.css" />
-        <link rel="stylesheet" type="text/css" href="./jqueryui/jquery-ui.css" />
+        <link rel="stylesheet" type="text/css" href="./jqueryui/jquery-ui.min.css" />
         <link rel="stylesheet" type="text/css" href="./jqueryui/jquery-ui-timepicker-addon.css" />
 
-        <script type="text/javascript" src="./jqueryui/external/jquery/jquery.js"></script>
-        <script type="text/javascript" src="./jqueryui/jquery-ui.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
         <script type="text/javascript" src="./jqueryui/jquery-ui-timepicker-addon.js"></script>
         <script type="text/javascript" src="./js.js"></script>
         <script type="text/javascript">
