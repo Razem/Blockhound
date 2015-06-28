@@ -141,7 +141,7 @@ require_once './functions.class.php';
                             if (isset($values["world"])) {
                                 $world = $values["world"];
                             }
-                            if (isset($values["timeRadius"])) {
+                            if (isset($values["timeRadius"]) && $values["timeRadius"] !== "") {
                                 $tmp = explode(":", $values["timeRadius"]);
                                 $timeRadius = $tmp[0] + " hour " + $tmp[1] + " minute";
                             }
